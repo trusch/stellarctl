@@ -40,6 +40,7 @@ var sendCmd = &cobra.Command{
 		amount, _ := cmd.Flags().GetString("amount")
 		assetCode, _ := cmd.Flags().GetString("asset-code")
 		assetIssuer, _ := cmd.Flags().GetString("asset-issuer")
+		memo, _ := cmd.Flags().GetString("memo")
 		cli := getClient()
 		txArgs := []build.TransactionMutator{
 			build.SourceAccount{AddressOrSeed: seed},
@@ -48,20 +49,24 @@ var sendCmd = &cobra.Command{
 		if viper.GetBool("testnet") {
 			txArgs = append(txArgs, build.TestNetwork)
 		}
+
+		paymentArgs := []interface{}{
+			build.Destination{AddressOrSeed: to},
+		}
 		if assetCode == "" {
-			txArgs = append(txArgs, build.Payment(
-				build.Destination{AddressOrSeed: to},
-				build.NativeAmount{Amount: amount},
-			))
+			paymentArgs = append(paymentArgs, build.NativeAmount{Amount: amount})
 		} else {
-			txArgs = append(txArgs, build.Payment(
-				build.Destination{AddressOrSeed: to},
+			paymentArgs = append(paymentArgs,
 				build.CreditAmount{
 					Code:   assetCode,
 					Issuer: assetIssuer,
 					Amount: amount,
 				},
-			))
+			)
+		}
+		txArgs = append(txArgs, build.Payment(paymentArgs...))
+		if memo != "" {
+			txArgs = append(txArgs, build.MemoText{Value: memo})
 		}
 		tx, err := build.Transaction(txArgs...)
 		if err != nil {
@@ -93,4 +98,6 @@ func init() {
 	sendCmd.Flags().String("amount", "0", "amount")
 	sendCmd.Flags().String("asset-code", "", "asset code")
 	sendCmd.Flags().String("asset-issuer", "", "asset issuer")
+	sendCmd.Flags().String("memo", "", "transaction memo")
+
 }

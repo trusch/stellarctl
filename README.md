@@ -156,3 +156,21 @@ thresholds:
   "amount": "100.0000000"
 }
 ```
+
+### Send a payment with a text memo
+```bash
+> stellarctl send --from ${ACCOUNT_ONE_SEED} --to ${ACCOUNT_TWO_ID} --amount 10 --memo "some tips for you" --testnet
+> stellarctl account info --id ${ACCOUNT_TWO_ID} transactions \
+    --limit 1 --testnet --format json | jq '.[0] | {id: .id, memo: .memo}'
+{
+  "id": "11849dcc909c12432d931645a629963c189891d8e050eba9a6e0b789ba6bbfc9",
+  "memo": "some tips for you"
+}
+> # just curious what effect on my account this transaction had...
+> stellarctl transaction info --id 11849dcc909c12432d931645a629963c189891d8e050eba9a6e0b789ba6bbfc9 effects \
+    --testnet --format json | jq ".[] | select(.account == \"${ACCOUNT_TWO_ID}\") | {type: .type, amount: .amount}"
+{
+  "type": "account_credited",
+  "amount": "10.0000000"
+}
+```
