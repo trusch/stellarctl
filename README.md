@@ -140,3 +140,19 @@ thresholds:
   "asset_issuer": "GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO"
 }
 ```
+
+### Get effects of the last transaction of an account
+```bash
+> tid=$(stellarctl account info --id ${ACCOUNT_ONE_ID} transactions --testnet --limit 1 --format json | jq '.[0].id' -r)
+>  stellarctl transaction info --id ${tid} effects --testnet --format json | jq '.[] | {type: .type, account: .account, amount: .amount}'
+{
+  "type": "account_credited",
+  "account": "GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ",
+  "amount": "100.0000000"
+}
+{
+  "type": "account_debited",
+  "account": "GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO",
+  "amount": "100.0000000"
+}
+```
