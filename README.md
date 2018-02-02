@@ -32,73 +32,111 @@ The long missing stellar command line utility!
 * uses official go SDK as far as possible
 * simple command line syntax
 
-## ToDo
+### Todo
 
 * manage SDEX offers
 * implement watch commands
 * declarative transaction build system
 
-## Help commands (some of them)
+
+## Examples
+
+### Create a test account and fund it using friendbot:
+```bash
+> stellarctl account generate
+Seed: SB7W36WTOVQCHH5Q5DMUF7HESWGOUIXMPIGXWWCIGS4GR43MJF5YJI4H
+Address: GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO
+> export ACCOUNT_ONE_SEED=SB7W36WTOVQCHH5Q5DMUF7HESWGOUIXMPIGXWWCIGS4GR43MJF5YJI4H
+> export ACCOUNT_ONE_ID=GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO
+> stellarctl account testfill --id ${ACCOUNT_ONE_ID} --testnet
+> stellarctl account info --id ${ACCOUNT_ONE_ID} --testnet
+balances:
+- balance: "10000.0000000"
+  limit: ""
+  asset:
+    type: native
+    code: ""
+    issuer: ""
+data: {}
+flags:
+  authrequired: false
+  authrevocable: false
+home_domain: ""
+id: GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO
+inflations_destination: ""
+sequence: "30428520442232832"
+signers:
+- publickey: GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO
+  weight: 1
+  key: GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO
+  type: ed25519_public_key
+subentry_count: 0
+thresholds:
+  lowthreshold: 0
+  medthreshold: 0
+  highthreshold: 0
 ```
-➜  stellarctl git:(master) ./stellarctl help
-a tool to interact with the stellar network
 
-Usage:
-  stellarctl [command]
+### Create an account and fund it using an existing account:
+```bash
+> stellarctl account generate
+Seed: SB6ZPJIKHAM4EFWEWHC6GA76T4EC7NISGBXH52KMDV4NYKVZUFASFREU
+Address: GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ
+> export ACCOUNT_TWO_SEED=SB6ZPJIKHAM4EFWEWHC6GA76T4EC7NISGBXH52KMDV4NYKVZUFASFREU
+> export ACCOUNT_TWO_ID=GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ
+> stellarctl account create \
+    --id ${ACCOUNT_TWO_ID} \
+    --seed ${ACCOUNT_ONE_SEED} \
+    --amount 10 \
+    --testnet
+> stellarctl account info --id ${ACCOUNT_TWO_ID} --testnet
+balances:
+- balance: "10.0000000"
+  limit: ""
+  asset:
+    type: native
+    code: ""
+    issuer: ""
+data: {}
+flags:
+  authrequired: false
+  authrevocable: false
+home_domain: ""
+id: GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ
+inflations_destination: ""
+sequence: "30429014363471872"
+signers:
+- publickey: GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ
+  weight: 1
+  key: GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ
+  type: ed25519_public_key
+subentry_count: 0
+thresholds:
+  lowthreshold: 0
+  medthreshold: 0
+  highthreshold: 0
+```
 
-Available Commands:
-  account     interact with accounts
-  help        Help about any command
-  send        send assets
-  transaction interact with transactions
-  trust       upsert a trustline for an asset
+### Send XLM
+```bash
+> stellarctl send --from ${ACCOUNT_ONE_SEED} --to ${ACCOUNT_TWO_ID} --amount 100 --testnet
+> stellarctl account info --id ${ACCOUNT_TWO_ID} --testnet --format json | jq ".balances[0].balance"
+"110.0000000"
+```
 
-Flags:
-      --config string   config file (default is $HOME/.stellarctl.yaml)
-      --format string   output format (default "yaml")
-  -h, --help            help for stellarctl
-      --testnet         use the testnet
-
-Use "stellarctl [command] --help" for more information about a command.
-➜  stellarctl git:(master) ./stellarctl account help
-interact with accounts
-
-Usage:
-  stellarctl account [command]
-
-Available Commands:
-  address     get account address for a given seed
-  create      create a new account
-  generate    generate a new key pair
-  info        infos about a account
-  set-options set account options
-  testfill    testfill a newly created account
-
-Flags:
-  -h, --help   help for account
-
-Global Flags:
-      --config string   config file (default is $HOME/.stellarctl.yaml)
-      --format string   output format (default "yaml")
-      --testnet         use the testnet
-
-Use "stellarctl account [command] --help" for more information about a command.
-➜  stellarctl git:(master) ./stellarctl send help   
-Error: encoded value is 0 bytes; minimum valid length is 3
-Usage:
-  stellarctl send [flags]
-
-Flags:
-      --amount string         amount (default "0")
-      --asset-code string     asset code
-      --asset-issuer string   asset issuer
-      --from string           source account seed
-  -h, --help                  help for send
-      --to string             destination account address
-
-Global Flags:
-      --config string   config file (default is $HOME/.stellarctl.yaml)
-      --format string   output format (default "yaml")
-      --testnet         use the testnet
-
+### Create a trustline and receive given asset
+```bash
+> stellarctl trust \
+    --code YLM --issuer ${ACCOUNT_ONE_ID} \
+    --seed ${ACCOUNT_TWO_SEED} --testnet
+> stellarctl send --from ${ACCOUNT_ONE_SEED} --to ${ACCOUNT_TWO_ID} \
+    --asset-code YLM --asset-issuer ${ACCOUNT_ONE_ID} --amount 100 --testnet
+> stellarctl account info --id ${ACCOUNT_TWO_ID} --testnet --format json | jq '.balances[] | select(.asset_code == "YLM")'
+{
+  "balance": "100.0000000",
+  "limit": "922337203685.4775807",
+  "asset_type": "credit_alphanum4",
+  "asset_code": "YLM",
+  "asset_issuer": "GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO"
+}
 ```
