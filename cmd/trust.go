@@ -40,10 +40,14 @@ var trustCmd = &cobra.Command{
 		code, _ := cmd.Flags().GetString("code")
 		limit, _ := cmd.Flags().GetString("limit")
 		cli := getClient()
+		trustArgs := []interface{}{}
+		if limit != "" {
+			trustArgs = append(trustArgs, build.Limit(limit))
+		}
 		txArgs := []build.TransactionMutator{
 			build.SourceAccount{AddressOrSeed: seed},
 			build.AutoSequence{SequenceProvider: cli},
-			build.Trust(code, issuer, build.Limit(limit)),
+			build.Trust(code, issuer, trustArgs...),
 		}
 		if viper.GetBool("testnet") {
 			txArgs = append(txArgs, build.TestNetwork)
