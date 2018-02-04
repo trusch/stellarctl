@@ -12,11 +12,12 @@ The long missing stellar command line utility!
 * manage trust
 * issue assets
 * generate keys
+* generate mnemonic codes and accounts according to SEP-0005
 * set account options
   * inflation address
   * thresholds
   * signers
-  * ...
+  * etc...
 * inspect ledger for account details
   * transactions
   * operations
@@ -43,7 +44,7 @@ The long missing stellar command line utility!
 
 ### Create a test account and fund it using friendbot:
 ```bash
-> stellarctl account generate
+> stellarctl account generate random
 Seed: SB7W36WTOVQCHH5Q5DMUF7HESWGOUIXMPIGXWWCIGS4GR43MJF5YJI4H
 Address: GCNZFKUUCSCAYP5JIMUJZRFQEMCCJN2YAZGQR6I6NJMDTXWCCEETIWIO
 > export ACCOUNT_ONE_SEED=SB7W36WTOVQCHH5Q5DMUF7HESWGOUIXMPIGXWWCIGS4GR43MJF5YJI4H
@@ -79,7 +80,7 @@ thresholds:
 
 ### Create an account and fund it using an existing account:
 ```bash
-> stellarctl account generate
+> stellarctl account generate random
 Seed: SB6ZPJIKHAM4EFWEWHC6GA76T4EC7NISGBXH52KMDV4NYKVZUFASFREU
 Address: GB3AS47AUAHGOQYSJTS3KNFH5XLIKKESVBGM4BZJU55YFSARVFLOYPHZ
 > export ACCOUNT_TWO_SEED=SB6ZPJIKHAM4EFWEWHC6GA76T4EC7NISGBXH52KMDV4NYKVZUFASFREU
@@ -173,4 +174,40 @@ thresholds:
   "type": "account_credited",
   "amount": "10.0000000"
 }
+```
+
+### Generate a new mnemonic passphrase and accounts according to SEP-0005
+```bash
+> stellarctl account generate mnemonic --password "some secret salting" --count 3
+Mnemonic: clarify ritual pony physical one juice coconut nurse oval enhance also shrug sentence speed until climb camera setup engine trigger loop town match around
+Account 0:
+Seed: SCPJXFDG4YKE5UPRR3USWUBPS3OHU6TFKWL2UABM55RRD4YODFXZX6NF
+Addr: GAQRBOI7G3FHNRXYJ63WQICLERXPBRUEZV3336QQ457BXDCHH2MPEMCS
+---
+Account 1:
+Seed: SAWA6VVFH3UJND34AA6PSJXD7DITUXOLE5K6ZU6XKV7W2WNPPK3XG2U6
+Addr: GBZOFASYWAQ57G3B4IUZKH3PP7N3H5KZJGSOUG5CGFCLMWHBYP7EMZVU
+---
+Account 2:
+Seed: SDGJDPSES7IW3Z7FJ3363NASQRII5VLCBPPEZJJZLJNTVNQOMOZOFXA7
+Addr: GAM3CNPKKRHRAAEE3TNPEZKQWZPLJ44RI247VZGKLAMNM5PQXKHM5SMC
+---
+```
+
+### Restore accounts from a mnemonic passphrase according to SEP-0005
+```bash
+> stellarctl account generate mnemonic --mnemonic "clarify ritual pony physical one juice coconut nurse oval enhance also shrug sentence speed until climb camera setup engine trigger loop town match around" --password "some secret salting" --count 3
+Mnemonic: clarify ritual pony physical one juice coconut nurse oval enhance also shrug sentence speed until climb camera setup engine trigger loop town match around
+Account 0:
+Seed: SCPJXFDG4YKE5UPRR3USWUBPS3OHU6TFKWL2UABM55RRD4YODFXZX6NF
+Addr: GAQRBOI7G3FHNRXYJ63WQICLERXPBRUEZV3336QQ457BXDCHH2MPEMCS
+---
+Account 1:
+Seed: SAWA6VVFH3UJND34AA6PSJXD7DITUXOLE5K6ZU6XKV7W2WNPPK3XG2U6
+Addr: GBZOFASYWAQ57G3B4IUZKH3PP7N3H5KZJGSOUG5CGFCLMWHBYP7EMZVU
+---
+Account 2:
+Seed: SDGJDPSES7IW3Z7FJ3363NASQRII5VLCBPPEZJJZLJNTVNQOMOZOFXA7
+Addr: GAM3CNPKKRHRAAEE3TNPEZKQWZPLJ44RI247VZGKLAMNM5PQXKHM5SMC
+---
 ```
