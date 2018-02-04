@@ -21,16 +21,27 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
+	"github.com/stellar/go/keypair"
 )
 
-// accountGenerateCmd represents the accountGenerate command
-var accountGenerateCmd = &cobra.Command{
-	Use:   "generate",
-	Short: "generate account keys",
-	Long:  `generate account keys`,
+// accountGenerateRandomCmd represents the accountGenerateRandom command
+var accountGenerateRandomCmd = &cobra.Command{
+	Use:   "random",
+	Short: "generate a random keypair",
+	Long:  `generate a random keypair`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		fullKey, err := keypair.Random()
+		if err != nil {
+			return err
+		}
+		fmt.Printf("Seed: %v\nAddress: %v\n", fullKey.Seed(), fullKey.Address())
+		return nil
+	},
 }
 
 func init() {
-	accountCmd.AddCommand(accountGenerateCmd)
+	accountGenerateCmd.AddCommand(accountGenerateRandomCmd)
 }
