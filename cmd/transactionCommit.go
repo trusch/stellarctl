@@ -21,9 +21,11 @@
 package cmd
 
 import (
+	"fmt"
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
+	"github.com/stellar/go/clients/horizon"
 	"github.com/trusch/stellarctl/transaction"
 )
 
@@ -48,6 +50,11 @@ var transactionCommitCmd = &cobra.Command{
 			return err
 		}
 		_, err = cli.SubmitTransaction(xdr)
+		if err != nil {
+			if e, ok := err.(*horizon.Error); ok {
+				fmt.Println(string(e.Problem.Extras["result_codes"]))
+			}
+		}
 		return err
 	},
 }
