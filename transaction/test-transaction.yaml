@@ -1,0 +1,81 @@
+---
+source_account: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+network: test
+sequence_id: 123123
+memo: foobar
+not_before: 2006-01-02T15:04:05Z
+not_after: 2020-01-02T15:04:05Z
+signatures:
+  - signature: "Zm9vYmFyCg=="
+    hint: [1,2,3,4]
+operations:
+  - type: create-account
+    destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    starting_balance: "10"
+  - type: payment
+    destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    asset:
+      code: YLM
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    amount: "10"
+  - type: path-payment
+    destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    send_asset:
+      code: YLM
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    send_max: "10000"
+    destination_asset:
+      code: BTC
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    destination_amount: "1"
+    path:
+      - code: XLM
+        native: true
+  - type: manage-offer
+    selling:
+      code: XLM
+      native: true
+    buying:
+      code: BTC
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    amount: "10"
+    price: "10000"
+    offer_id: 0
+  - type: create-passive-offer
+    selling:
+      code: XLM
+      native: true
+    buying:
+      code: BTC
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    amount: "10"
+    price: "10000"
+  - type: set-options
+    inflation_destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    set_flags: 1
+    clear_flags: 1
+    master_weight: 2
+    low_threshold: 1
+    medium_threshold: 1
+    high_threshold: 1
+    home_domain: trusch.io
+    signer:
+      public_key: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+      weight: 2
+  - type: change-trust
+    line:
+      code: BTC
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    limit: "1000"
+  - type: allow-trust
+    trustor: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    asset:
+      code: BTC
+      issuer: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+    authorize: true
+  - type: account-merge
+    destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+  - type: inflation
+  - type: manage-data
+    name: foobar
+    value: !!binary "Zm9vYmFyCg=="
