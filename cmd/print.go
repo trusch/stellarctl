@@ -11,7 +11,7 @@ import (
 )
 
 func print(arg interface{}) error {
-	var obj map[string]interface{}
+	obj := make(map[string]interface{})
 	switch arg.(type) {
 	case horizon.Account:
 		{
@@ -35,6 +35,14 @@ func print(arg interface{}) error {
 			if err := reader.Decode(&obj); err != nil {
 				return err
 			}
+		}
+	case horizon.OrderBookSummary:
+		{
+			book := arg.(horizon.OrderBookSummary)
+			obj["asks"] = book.Asks
+			obj["bids"] = book.Bids
+			obj["buying"] = book.Buying
+			obj["selling"] = book.Selling
 		}
 	}
 	removeLinks(obj)
