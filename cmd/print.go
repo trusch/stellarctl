@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/viper"
 	"github.com/stellar/go/clients/horizon"
 	yaml "gopkg.in/yaml.v2"
@@ -43,6 +44,17 @@ func print(arg interface{}) error {
 			obj["bids"] = book.Bids
 			obj["buying"] = book.Buying
 			obj["selling"] = book.Selling
+		}
+	case horizon.OffersPage:
+		{
+			offers := arg.(horizon.OffersPage)
+			obj["offers"] = offers.Embedded.Records
+		}
+	default:
+		{
+			if err := mapstructure.Decode(arg, obj); err != nil {
+				return err
+			}
 		}
 	}
 	removeLinks(obj)
