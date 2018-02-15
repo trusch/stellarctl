@@ -23,6 +23,7 @@ package cmd
 import (
 	"io/ioutil"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/trusch/stellarctl/transaction"
 	yaml "gopkg.in/yaml.v2"
@@ -46,7 +47,7 @@ var transactionSignCmd = &cobra.Command{
 		}
 		tx, err := transaction.FromYAML(bs)
 		if err != nil {
-			return err
+			return errors.Wrap(err, "can not parse transaction file")
 		}
 		if err = tx.Sign(seed); err != nil {
 			return err
