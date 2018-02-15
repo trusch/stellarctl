@@ -83,10 +83,11 @@ func (op *CreateAccountOperation) GetOperationType() OperationType {
 
 // PaymentOperation sends assets to another account
 type PaymentOperation struct {
-	Type        OperationType `json:"type,omitempty" yaml:"type,omitempty" mapstructure:"type,omitempty"`
-	Destination string        `json:"destination,omitempty" yaml:"destination,omitempty" mapstructure:"destination,omitempty"`
-	Asset       Asset         `json:"asset,omitempty" yaml:"asset,omitempty" mapstructure:"asset,omitempty"`
-	Amount      string        `json:"amount,omitempty" yaml:"amount,omitempty" mapstructure:"amount,omitempty"`
+	Type          OperationType `json:"type,omitempty" yaml:"type,omitempty" mapstructure:"type,omitempty"`
+	Destination   string        `json:"destination,omitempty" yaml:"destination,omitempty" mapstructure:"destination,omitempty"`
+	SourceAccount string        `json:"source_account,omitempty" yaml:"source_account,omitempty" mapstructure:"source_account,omitempty"`
+	Asset         Asset         `json:"asset,omitempty" yaml:"asset,omitempty" mapstructure:"asset,omitempty"`
+	Amount        string        `json:"amount,omitempty" yaml:"amount,omitempty" mapstructure:"amount,omitempty"`
 }
 
 // GetOperationType implements the operation interface
@@ -97,6 +98,7 @@ func (op *PaymentOperation) GetOperationType() OperationType {
 // PathPaymentOperation sends assets to another account
 type PathPaymentOperation struct {
 	Type              OperationType `json:"type,omitempty" yaml:"type,omitempty" mapstructure:"type,omitempty"`
+	SourceAccount     string        `json:"source_account,omitempty" yaml:"source_account,omitempty" mapstructure:"source_account,omitempty"`
 	SendAsset         Asset         `json:"send_asset,omitempty" yaml:"send_asset,omitempty" mapstructure:"send_asset,omitempty"`
 	SendMax           string        `json:"send_max,omitempty" yaml:"send_max,omitempty" mapstructure:"send_max,omitempty"`
 	Destination       string        `json:"destination,omitempty" yaml:"destination,omitempty" mapstructure:"destination,omitempty"`

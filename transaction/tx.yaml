@@ -1,10 +1,7 @@
 network: test
-source_account: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
-sequence_id: 31445478503612420
+source_account: GCBMYFXSK3SYC2WTFAMJ2ERO6DY6AQR67DPUIOBXLZOSB543QAMRRZBS
+sequence_id: 31445478503612422
 operations:
-- type: create-account
-  destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
-  starting_balance: "10"
 - type: payment
   destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
   asset:
@@ -13,19 +10,7 @@ operations:
   amount: "10"
 memo: foobar
 signatures:
-- signature: 9E3QjWuHEhYxNvwRab9U0qowagb7ALFm28km4r8FxGuZYBpCymhWW7zbHclKwqGRlTGkOuYT1W5tB4yKjX4qCw==
-  hint:
-  - 155
-  - 128
-  - 25
-  - 24
-- signature: 9E3QjWuHEhYxNvwRab9U0qowagb7ALFm28km4r8FxGuZYBpCymhWW7zbHclKwqGRlTGkOuYT1W5tB4yKjX4qCw==
-  hint:
-  - 155
-  - 128
-  - 25
-  - 24
-- signature: 9E3QjWuHEhYxNvwRab9U0qowagb7ALFm28km4r8FxGuZYBpCymhWW7zbHclKwqGRlTGkOuYT1W5tB4yKjX4qCw==
+- signature: lt8iSYvrcuKeYyk4aEipIigqmLzSvBBk3QQfxs7WEagOnO8Ub6ndzdmPrd0OVFevyhX2vY8AeN/TI/Ptt9OHCQ==
   hint:
   - 155
   - 128

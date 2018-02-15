@@ -90,6 +90,9 @@ func FromYAML(data []byte) (*Transaction, error) {
 					{
 						operation := &PaymentOperation{}
 						if err := mapstructure.Decode(operationDoc, operation); err == nil {
+							if operation.Asset.Code == NativeAssetCode {
+								operation.Asset.Native = true
+							}
 							tx.Operations = append(tx.Operations, operation)
 						} else {
 							return nil, errors.Wrap(err, "can not parse operation")
@@ -99,6 +102,9 @@ func FromYAML(data []byte) (*Transaction, error) {
 					{
 						operation := &PathPaymentOperation{}
 						if err := mapstructure.Decode(operationDoc, operation); err == nil {
+							if operation.SendAsset.Code == NativeAssetCode {
+								operation.SendAsset.Native = true
+							}
 							tx.Operations = append(tx.Operations, operation)
 						} else {
 							return nil, errors.Wrap(err, "can not parse operation")

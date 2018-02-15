@@ -40,14 +40,14 @@ func (tx *Transaction) ToTransactionBuilder() (*build.TransactionBuilder, error)
 		case Payment:
 			{
 				payOp := op.(*PaymentOperation)
-				var payment build.PaymentBuilder
+				paymentMutators := make([]interface{}, 0)
 				if payOp.Asset.Native {
-					payment = build.Payment(
+					paymentMutators = append(paymentMutators,
 						build.Destination{AddressOrSeed: payOp.Destination},
 						build.NativeAmount{Amount: payOp.Amount},
 					)
 				} else {
-					payment = build.Payment(
+					paymentMutators = append(paymentMutators,
 						build.Destination{AddressOrSeed: payOp.Destination},
 						build.CreditAmount{
 							Code:   payOp.Asset.Code,
@@ -56,7 +56,10 @@ func (tx *Transaction) ToTransactionBuilder() (*build.TransactionBuilder, error)
 						},
 					)
 				}
-				mutators = append(mutators, payment)
+				if payOp.SourceAccount != "" {
+					paymentMutators = append(paymentMutators, build.SourceAccount{AddressOrSeed: payOp.SourceAccount})
+				}
+				mutators = append(mutators, build.Payment(paymentMutators...))
 			}
 		case PathPayment:
 			{
@@ -91,6 +94,9 @@ func (tx *Transaction) ToTransactionBuilder() (*build.TransactionBuilder, error)
 						MaxAmount: payOp.SendMax,
 						Path:      path,
 					},
+				}
+				if payOp.SourceAccount != "" {
+					payMutators = append(payMutators, build.SourceAccount{AddressOrSeed: payOp.SourceAccount})
 				}
 				mutators = append(mutators, build.Payment(payMutators...))
 			}
