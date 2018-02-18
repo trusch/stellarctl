@@ -1,5 +1,6 @@
 all: bin/stellarctl.linux.amd64 \
 	bin/stellarctl.darwin.amd64 \
+	bin/stellarctl.windows.amd64 \
 	bin/stellarctl.linux.arm \
 	bin/stellarctl.linux.arm64 \
 
@@ -16,6 +17,11 @@ bin/stellarctl.linux.amd64: $(SRC) vendor
 bin/stellarctl.darwin.amd64: $(SRC) vendor
 	mkdir -p bin
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -v -a -ldflags '-extldflags "-static"' -o $@ .
+
+bin/stellarctl.windows.amd64: $(SRC) vendor
+	mkdir -p bin
+	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -v -a -ldflags '-extldflags "-static"' -o $@ .
+
 
 bin/stellarctl.linux.arm: $(SRC) vendor
 	mkdir -p bin

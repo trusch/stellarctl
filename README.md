@@ -1,18 +1,18 @@
 `stellarctl`
 ==========
 
-The long missing stellar command line utility! Finally a swiss army knife every lumenaut should have in their pockets!
+The long missing stellar command line utility! Finally a swiss army knife every lumenaut should have in their pockets.
 
 ## Features
 
 ### high level
 
 * setup multi sign wallets with mnemonic codes according do SEP-0005
-* send and receive assets without the need to trust a third party
+* send and receive assets without the need to trust a third party or browser
 * buy and sell any asset on SDEX
-* efficently inspect the blockchain state including balances and transaction details
+* efficently inspect the stellar network state including balances and transaction details
 * craft arbitary transactions using human readable yaml files
-* query coinmarketcap from the commandline
+* query coinmarketcap from the commandline ;)
 
 ### full list
 
@@ -49,6 +49,9 @@ The long missing stellar command line utility! Finally a swiss army knife every 
 ### Todo
 
 * implement watch commands
+
+## Install
+To install `stellarctl` go to the [Releases Page](https://github.com/trusch/stellarctl/releases) of this project and download the binary matching your operating system and architecture. Place this executable somewhere where your shell will recognize it. On linux and darwin (sane operating systems ;)) just move it somewhere inside your PATH. No you are ready to use the tool!
 
 ## Examples
 
