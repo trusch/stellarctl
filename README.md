@@ -1,23 +1,36 @@
-stellarctl
+`stellarctl`
 ==========
 
-The long missing stellar command line utility!
+The long missing stellar command line utility! Finally a swiss army knife every lumenaut should have in their pockets!
 
 ## Features
 
-### functional
+### high level
+
+* setup multi sign wallets with mnemonic codes according do SEP-0005
+* send and receive assets without the need to trust a third party
+* buy and sell any asset on SDEX
+* efficently inspect the blockchain state including balances and transaction details
+* craft arbitary transactions using human readable yaml files
+* query coinmarketcap from the commandline
+
+### full list
 
 * create accounts
 * send lumens and other assets
 * manage trust
 * issue assets
+* manage SDEX offers
+* declarative transaction build system
 * generate keys
 * generate mnemonic codes and accounts according to SEP-0005
 * set account options
   * inflation address
   * thresholds
   * signers
-  * etc...
+  * flags
+  * home domain
+  * master weight
 * inspect ledger for account details
   * transactions
   * operations
@@ -35,10 +48,7 @@ The long missing stellar command line utility!
 
 ### Todo
 
-* manage SDEX offers
 * implement watch commands
-* declarative transaction build system
-
 
 ## Examples
 
@@ -211,3 +221,79 @@ Seed: SDGJDPSES7IW3Z7FJ3363NASQRII5VLCBPPEZJJZLJNTVNQOMOZOFXA7
 Addr: GAM3CNPKKRHRAAEE3TNPEZKQWZPLJ44RI247VZGKLAMNM5PQXKHM5SMC
 ---
 ```
+
+### Manage an SDEX offer
+```bash
+> stellarctl trust \
+    --seed ${ACCOUNT_ONE_SEED} \
+    --code BTC \
+    --issuer ${ACCOUNT_TWO_ID} \
+    --testnet
+> stellarctl offer create \
+    --seed ${ACCOUNT_ONE_SEED} \
+    --buying-asset-code BTC \
+    --buying-asset-issuer ${ACCOUNT_TWO_ID} \
+    --selling-asset-code XLM \
+    --amount 0.005 \
+    --price 0.0000465 \
+    --testnet
+> stellarctl offer list --id ${ACCOUNT_ONE_ID} --testnet
+offers:
+- links:
+    self:
+      href: https://horizon-testnet.stellar.org/offers/101741
+      templated: false
+    offermaker:
+      href: https://horizon-testnet.stellar.org/accounts/GAKJROQ2PUBACRYL5ZOODBV5HDGIZ7CKU3RTEQ4NCLFXRDMZWHBSULRG
+      templated: false
+  id: 101741
+  pt: "101741"
+  seller: GAKJROQ2PUBACRYL5ZOODBV5HDGIZ7CKU3RTEQ4NCLFXRDMZWHBSULRG
+  selling:
+    type: native
+    code: ""
+    issuer: ""
+  buying:
+    type: credit_alphanum4
+    code: BTC
+    issuer: GAK3IXVT3CFUXKW2NRVZIB4ADH2NR3WZJ2VUFQFQQPD2NWOKFAG7CO6N
+  amount: "0.0500000"
+  pricer:
+    "n": 57
+    d: 1250000
+  price: "0.0000456"
+```
+
+### Create a payment transaction from scratch
+
+first get the current sequence number for your account and add one
+
+```bash
+> seq=$(stellarctl account info --id ${ACCOUNT_ONE_ID} --format json --testnet | jq -r .sequence)
+> expr $seq + 1
+31535724356435971
+```
+
+now create a transaction in a file called tx.yaml containing the sequence number from above
+
+```yaml
+source_account: GCBMYFXSK3SYC2WTFAMJ2ERO6DY6AQR67DPUIOBXLZOSB543QAMRRZBS
+sequence_id: 31535724356435971
+network: test
+memo: "payment for you!"
+operations:
+- type: payment
+  destination: GBDT3K42LOPSHNAEHEJ6AVPADIJ4MAR64QEKKW2LQPBSKLYD22KUEH4P
+  asset:
+    code: XLM
+  amount: "10"
+```
+
+Now you can sign and commit it!
+
+```bash
+> stellarctl transaction sign --input tx.yaml --output tx.signed.yaml --seed ${ACCOUNT_ONE_SEED}
+> stellarctl transaction commit --input tx.signed.yaml --testnet
+```
+
+see [test-transaction.yaml](./transaction/test-transaction.yaml) for a full list of supported operations (should be everything what's currently possible in stellar 😅)
