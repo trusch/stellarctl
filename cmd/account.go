@@ -29,9 +29,6 @@ var accountCmd = &cobra.Command{
 	Use:   "account",
 	Short: "interact with accounts",
 	Long:  `interact with accounts`,
-	// Run: func(cmd *cobra.Command, args []string) {
-	// 	fmt.Println("account called")
-	// },
 }
 
 func init() {
