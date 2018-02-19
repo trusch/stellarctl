@@ -36,6 +36,8 @@ var accountTestfillCmd = &cobra.Command{
 	Long:  `testfill a newly created account, only works on the testnet`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id, _ := cmd.Flags().GetString("id")
+		id = MustResolveAddress(id)
+
 		if id == "" && len(args) > 0 {
 			id = args[0]
 		}

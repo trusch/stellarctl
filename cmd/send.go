@@ -37,9 +37,11 @@ var sendCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		seed, _ := cmd.Flags().GetString("from")
 		to, _ := cmd.Flags().GetString("to")
+		to = MustResolveAddress(to)
 		amount, _ := cmd.Flags().GetString("amount")
 		assetCode, _ := cmd.Flags().GetString("asset-code")
 		assetIssuer, _ := cmd.Flags().GetString("asset-issuer")
+		assetIssuer = MustResolveAddress(assetIssuer)
 		memo, _ := cmd.Flags().GetString("memo")
 		cli := getClient()
 		txArgs := []build.TransactionMutator{

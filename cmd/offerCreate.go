@@ -45,8 +45,10 @@ var offerCreateCmd = &cobra.Command{
 		price, _ := f.GetString("price")
 		sellingAssetCode, _ := f.GetString("selling-asset-code")
 		sellingAssetIssuer, _ := f.GetString("selling-asset-issuer")
+		sellingAssetIssuer = MustResolveAddress(sellingAssetIssuer)
 		buyingAssetCode, _ := f.GetString("buying-asset-code")
 		buyingAssetIssuer, _ := f.GetString("buying-asset-issuer")
+		buyingAssetIssuer = MustResolveAddress(buyingAssetIssuer)
 		passive, _ := f.GetBool("passive")
 		var op transaction.Operation
 		if !passive {

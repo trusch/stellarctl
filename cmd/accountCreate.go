@@ -37,6 +37,7 @@ var accountCreateCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		seed, _ := cmd.Flags().GetString("seed")
 		id, _ := cmd.Flags().GetString("id")
+		id = MustResolveAddress(id)
 		amount, _ := cmd.Flags().GetString("amount")
 		cli := getClient()
 		txArgs := []build.TransactionMutator{

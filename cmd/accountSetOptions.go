@@ -75,10 +75,12 @@ var setOptionsCmd = &cobra.Command{
 			txArgs = append(txArgs, build.SetThresholds(uint32(thresh[0]), uint32(thresh[1]), uint32(thresh[2])))
 		}
 		if signer, _ := cmd.Flags().GetString("add-signer"); signer != "" {
+			signer = MustResolveAddress(signer)
 			weight, _ := cmd.Flags().GetInt("signer-weight")
 			txArgs = append(txArgs, build.AddSigner(signer, uint32(weight)))
 		}
 		if signer, _ := cmd.Flags().GetString("remove-signer"); signer != "" {
+			signer = MustResolveAddress(signer)
 			txArgs = append(txArgs, build.RemoveSigner(signer))
 		}
 		tx, err := build.Transaction(txArgs...)

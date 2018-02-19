@@ -35,6 +35,7 @@ var accountInfoOperationsCmd = &cobra.Command{
 	Long:  `list account operations`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		id, _ := cmd.Flags().GetString("id")
+		id = MustResolveAddress(id)
 		cursor, _ := cmd.Flags().GetInt("cursor")
 		limit, _ := cmd.Flags().GetInt("limit")
 		order, _ := cmd.Flags().GetString("order")

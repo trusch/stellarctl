@@ -32,6 +32,7 @@ var offerListCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cli := getClient()
 		id, _ := cmd.Flags().GetString("id")
+		id = MustResolveAddress(id)
 		offers, err := cli.LoadAccountOffers(id)
 		if err != nil {
 			return err

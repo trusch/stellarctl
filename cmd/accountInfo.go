@@ -39,6 +39,7 @@ var accountInfoCmd = &cobra.Command{
 		if id == "" {
 			return errors.New("you must specify an id")
 		}
+		id = MustResolveAddress(id)
 		cli := getClient()
 		account, err := cli.LoadAccount(id)
 		if err != nil {

@@ -37,7 +37,9 @@ var orderbookCmd = &cobra.Command{
 		sellingCode, _ := cmd.Flags().GetString("selling-code")
 		buyingCode, _ := cmd.Flags().GetString("buying-code")
 		sellingIssuer, _ := cmd.Flags().GetString("selling-issuer")
+		sellingIssuer = MustResolveAddress(sellingIssuer)
 		buyingIssuer, _ := cmd.Flags().GetString("buying-issuer")
+		buyingIssuer = MustResolveAddress(buyingIssuer)
 		limit, _ := cmd.Flags().GetInt("limit")
 		selling := horizon.Asset{
 			Code:   sellingCode,

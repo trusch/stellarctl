@@ -37,6 +37,7 @@ var trustCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		seed, _ := cmd.Flags().GetString("seed")
 		issuer, _ := cmd.Flags().GetString("issuer")
+		issuer = MustResolveAddress(issuer)
 		code, _ := cmd.Flags().GetString("code")
 		limit, _ := cmd.Flags().GetString("limit")
 		cli := getClient()

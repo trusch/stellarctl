@@ -22,6 +22,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/stellar/go/clients/federation"
@@ -60,4 +61,12 @@ func ResolveAddress(address string) (string, error) {
 		return "", err
 	}
 	return resp.AccountID, nil
+}
+
+func MustResolveAddress(address string) string {
+	addr, err := ResolveAddress(address)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return addr
 }

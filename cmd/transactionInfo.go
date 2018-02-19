@@ -39,7 +39,7 @@ var transactionInfoCmd = &cobra.Command{
 			id = args[0]
 		}
 		if id == "" {
-			return errors.New("you must specify an idess")
+			return errors.New("you must specify an transaction id")
 		}
 
 		url := getClientURL() + "/transactions/" + id
