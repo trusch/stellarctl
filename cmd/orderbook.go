@@ -95,7 +95,7 @@ var orderbookCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(orderbookCmd)
+	RootCmd.AddCommand(orderbookCmd)
 	orderbookCmd.Flags().String("selling-code", "", "selling asset code")
 	orderbookCmd.Flags().String("selling-issuer", "", "selling asset issuer")
 	orderbookCmd.Flags().String("buying-code", "", "buying asset code")

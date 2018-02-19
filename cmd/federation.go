@@ -21,16 +21,43 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
+	"github.com/stellar/go/clients/federation"
 )
 
-// offerCmd represents the offer command
-var offerCmd = &cobra.Command{
-	Use:   "offer",
-	Short: "offer related commands",
-	Long:  `offer related commands`,
+// federationCmd represents the federation command
+var federationCmd = &cobra.Command{
+	Use:   "federation",
+	Short: "get account id for a federation address",
+	Long:  `get account id for a federation address`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		address, _ := cmd.Flags().GetString("address")
+		if address == "" && len(args) > 0 {
+			address = args[0]
+		}
+		addr, err := ResolveAddress(address)
+		if err != nil {
+			return err
+		}
+		fmt.Println(addr)
+		return nil
+	},
 }
 
 func init() {
-	RootCmd.AddCommand(offerCmd)
+	RootCmd.AddCommand(federationCmd)
+	federationCmd.Flags().String("address", "", "federation address")
+}
+
+func ResolveAddress(address string) (string, error) {
+	if len(address) == 56 && address[0] == 'G' {
+		return address, nil
+	}
+	resp, err := federation.DefaultPublicNetClient.LookupByAddress(address)
+	if err != nil {
+		return "", err
+	}
+	return resp.AccountID, nil
 }

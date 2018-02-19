@@ -92,7 +92,7 @@ var sendCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(sendCmd)
+	RootCmd.AddCommand(sendCmd)
 	sendCmd.Flags().String("from", "", "source account seed ")
 	sendCmd.Flags().String("to", "", "destination account address")
 	sendCmd.Flags().String("amount", "0", "amount")

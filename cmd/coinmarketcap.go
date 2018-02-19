@@ -71,7 +71,7 @@ var coinmarketcapCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(coinmarketcapCmd)
+	RootCmd.AddCommand(coinmarketcapCmd)
 	coinmarketcapCmd.Flags().String("coin", "stellar", "which coin")
 	coinmarketcapCmd.Flags().String("convert", "EUR", "include converted value")
 	coinmarketcapCmd.Flags().String("limit", "", "limit output when query for 'all' coins")

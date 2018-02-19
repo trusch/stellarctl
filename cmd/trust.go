@@ -76,7 +76,7 @@ var trustCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(trustCmd)
+	RootCmd.AddCommand(trustCmd)
 	trustCmd.Flags().String("seed", "", "your account seed")
 	trustCmd.Flags().String("code", "", "asset code")
 	trustCmd.Flags().String("issuer", "", "asset issuer id")
