@@ -17,7 +17,7 @@ func (tx *Transaction) ToTransactionBuilder() (*build.TransactionBuilder, error)
 		mutators = append(mutators, build.AutoSequence{SequenceProvider: tx.sequenceProvider})
 	}
 	if tx.Network == DefaultNetwork {
-		mutators = append(mutators, build.DefaultNetwork)
+		mutators = append(mutators, build.PublicNetwork)
 	} else if tx.Network == TestNetwork {
 		mutators = append(mutators, build.TestNetwork)
 	} else {
